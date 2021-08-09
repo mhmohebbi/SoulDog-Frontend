@@ -19,6 +19,7 @@ import Products from './pages/Products';
 import Blog from './pages/Blog';
 import User from './pages/User';
 import NotFound from './pages/Page404';
+import Post from './components/posts/index';
 
 // ----------------------------------------------------------------------
 export default function App() {
@@ -35,6 +36,12 @@ export default function App() {
           <DashboardLayout>
             <Products />
           </DashboardLayout>
+        </Route>
+        <Route path="/post">
+          <Post />
+        </Route>
+        <Route path="/">
+          <Login />
         </Route>
         <Route path="/*">
           <NotFound />
