@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import menu2Fill from '@iconify/icons-eva/menu-2-fill';
 // material
 import { alpha, experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Stack, AppBar, Toolbar, IconButton } from '@material-ui/core';
+import { Box, Stack, AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
 // components
 import { MHidden } from '../../components/@material-extend';
 //
@@ -46,18 +46,19 @@ export default function DashboardNavbar({ onOpenSidebar }) {
   return (
     <RootStyle>
       <ToolbarStyle>
-        <MHidden width="lgUp">
+        <h1 style={{ color: 'green' }}>SoulDog</h1>
+        {/* <MHidden width="lgUp">
           <IconButton onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
             <Icon icon={menu2Fill} />
           </IconButton>
-        </MHidden>
+        </MHidden> */}
 
-        <Searchbar />
+        {/* <Searchbar /> */}
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack direction="row" spacing={{ xs: 0.5, sm: 1.5 }}>
-          <LanguagePopover />
-          <NotificationsPopover />
+          {/* <LanguagePopover /> */}
+          {/* <NotificationsPopover /> */}
           <AccountPopover />
         </Stack>
       </ToolbarStyle>

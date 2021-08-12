@@ -66,6 +66,15 @@ export default function PostCard({ post }) {
         <Typography variant="body2" color="textSecondary" component="p">
           {post.title}
         </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          Energy: {post.energy}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          Aggression: {post.aggression}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          Maintenance: {post.maintenance}
+        </Typography>
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">

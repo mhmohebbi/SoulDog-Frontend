@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 // material
 import { experimentalStyled as styled } from '@material-ui/core/styles';
-import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { Box, Link, Button, Drawer, Typography, Avatar, Stack, Modal } from '@material-ui/core';
 // components
 import Logo from '../../components/Logo';
 import Scrollbar from '../../components/Scrollbar';
@@ -40,9 +41,37 @@ DashboardSidebar.propTypes = {
   onCloseSidebar: PropTypes.func
 };
 
+function rand() {
+  return Math.round(Math.random() * 20) - 10;
+}
+
+function getModalStyle() {
+  const top = 50 + rand();
+  const left = 50 + rand();
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`
+  };
+}
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3)
+  }
+}));
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
+  const classes = useStyles();
+  const [modalStyle] = useState(getModalStyle);
   const { pathname } = useLocation();
   const { user, setIsAuth } = useContext(AuthContext);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (isOpenSidebar) {
@@ -50,6 +79,15 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
+
+  const body = (
+    <div style={modalStyle} className={classes.paper}>
+      <h2 id="simple-modal-title">Text in a modal</h2>
+      <p id="simple-modal-description">
+        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+      </p>
+    </div>
+  );
 
   const renderContent = (
     <Scrollbar
@@ -83,6 +121,17 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         </Link>
       </Box>
 
+      <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
+        Create Post
+      </Button>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {body}
+      </Modal>
       <NavSection navConfig={sidebarConfig} />
 
       <Box sx={{ flexGrow: 1 }} />

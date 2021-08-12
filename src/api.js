@@ -28,4 +28,15 @@ const addComment = (post_id, user_id, text) =>
     text: text
   });
 
-export { login, logout, getAllPosts, getDogPic, getPostById, getAllComments, addComment };
+const getPetById = (id) => axios.get(`${API_URL}/pet/getPetById/${id}`);
+
+export {
+  login,
+  logout,
+  getAllPosts,
+  getDogPic,
+  getPostById,
+  getAllComments,
+  addComment,
+  getPetById
+};
