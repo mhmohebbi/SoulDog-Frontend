@@ -15,6 +15,10 @@ const logout = () => {
 
 const getAllPosts = () => axios.get(`${API_URL}/post/getAllPosts`);
 
+const deletePost = (id) => axios.post(`${API_URL}/post/removePost`, {
+  id: id
+});
+
 const getDogPic = () => axios.get('https://dog.ceo/api/breeds/image/random');
 
 const getPostById = (id) => axios.get(`${API_URL}/post/getPostById/${id}`);
@@ -30,6 +34,18 @@ const addComment = (post_id, user_id, text) =>
 
 const getPetById = (id) => axios.get(`${API_URL}/pet/getPetById/${id}`);
 
+const getLikeByUserIdAndPostId = (uid, pid) => axios.get(`${API_URL}/like/getLikeByUserIdAndPostId/${uid}/${pid}`);
+
+const deleteLike = (id) => axios.post(`${API_URL}/like/removeLike`, {
+  id: id
+});
+
+const addLikes = (user_id, post_id) =>
+  axios.post(`${API_URL}/like/addLike`, {
+    user_id: user_id,
+    post_id: post_id,
+  });
+
 export {
   login,
   logout,
@@ -38,5 +54,9 @@ export {
   getPostById,
   getAllComments,
   addComment,
-  getPetById
+  getPetById,
+  deletePost,
+  getLikeByUserIdAndPostId,
+  deleteLike,
+  addLikes
 };

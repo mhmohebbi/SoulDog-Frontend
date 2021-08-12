@@ -67,7 +67,7 @@ export default function DashboardLayout() {
   }, []);
 
   const handleClick = (post) => {
-    console.log(post);
+    //console.log(post);
     setClicked(true);
     setPostID(post.id);
   };

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { useState, useEffect, useContext } from 'react';
-import { getPostById, getAllComments, addComment } from '../../api';
-import { useLocation } from 'react-router-dom';
+import { getPostById, getAllComments, addComment, deletePost, getLikeByUserIdAndPostId, addLikes, deleteLike } from '../../api';
+import { useLocation, Redirect } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { Typography, TextField, Button } from '@material-ui/core';
@@ -11,7 +11,14 @@ import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/styles';
 import { AuthContext } from '../../AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
+
+import IconButton from '@material-ui/core/IconButton';
+import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
+import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+
 import 'react-toastify/dist/ReactToastify.css';
+import { nullFormat } from 'numeral';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,20 +57,30 @@ const Post = (props) => {
   );
 
   const [comments, setComments] = useState([]);
-
+  const [deleted, setDeleted] = useState(false);
   const [commentText, setCommentText] = useState('');
+  const [liked, setLiked] = useState(null);
 
   const { isAuth, user } = useContext(AuthContext);
 
   useEffect(() => {
     getPostById(id).then((res) => {
       setPost(res.data);
-      console.log(res.data);
+      //console.log(res.data);
     });
 
     getDogPic().then((res) => {
       setDogImg(res.data.message);
     });
+
+    getLikeByUserIdAndPostId(user.id, id).then((res) => {
+      if (res.data === "") {
+        setLiked(null);
+      } else {
+        setLiked(res.data.id);
+      }
+    });
+
   }, []);
 
   const handleCommentSubmit = () => {
@@ -71,6 +88,23 @@ const Post = (props) => {
       toast.info('Comment cannot be empty.', { position: 'top-center' });
     } else {
       addComment(id, user.id, commentText);
+    }
+  };
+
+  const deleteForever = () => {
+    deletePost(id);
+    //console.log("deleted");
+    setTimeout(() => {console.log('sleep'); setDeleted(true);}, 1000);
+  };
+
+  const flipLike = () => {
+    liked ? setLiked(false) : setLiked(true);
+    if (liked) {
+      deleteLike(liked);
+      setLiked(null);
+    } else {
+      setLiked(true);
+      addLikes(user.id, id);
     }
   };
 
@@ -82,6 +116,12 @@ const Post = (props) => {
 
   return (
     <>
+    {deleted ? (
+      <>
+      <Redirect to="dashboard" />
+      </>
+    ):(
+      <>
       <ToastContainer />
       <div className={classes.root}>
         <Grid container spacing={3} style={{ margin: '10px' }}>
@@ -102,6 +142,26 @@ const Post = (props) => {
               <br />
               <Typography>{post.content}</Typography>
             </Paper>
+
+            <div onClick={flipLike}>
+              <IconButton aria-label="like" style={{float:"left", width:"50%"}}>
+                <>
+                {liked ? (
+                  <ThumbUpAltIcon fontSize="large"/>
+                ):(
+                  <ThumbUpAltOutlinedIcon fontSize="large"/>
+                )
+                }
+                </>
+              </IconButton>
+            </div>
+
+            <div onClick={deleteForever}>
+              <IconButton aria-label="delete"  style={{float:"right", width:"50%"}}>
+                <DeleteForeverIcon fontSize="large" />
+              </IconButton>
+            </div>
+
             <br />
 
             <Paper
@@ -140,6 +200,8 @@ const Post = (props) => {
           <Grid item xs={3} />
         </Grid>
       </div>
+      </>
+    )}
     </>
   );
 };
