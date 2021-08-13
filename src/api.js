@@ -21,6 +21,8 @@ const deletePost = (id) => axios.post(`${API_URL}/post/removePost`, {
   id: id
 });
 
+//comment
+
 const getDogPic = () => axios.get('https://dog.ceo/api/breeds/image/random');
 
 const getPostById = (id) => axios.get(`${API_URL}/post/getPostById/${id}`);
