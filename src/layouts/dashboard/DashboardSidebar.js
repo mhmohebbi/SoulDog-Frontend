@@ -141,7 +141,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
     console.log(formDescr);
 
     addPets(formBreed, formMaint, formAggr, formEnergy).then((res)=> {
-      // console.log(res.data);
+      console.log(res.data);
       let petid = res.data;
       if (petid !== "Pet breed exists") addPosts(user.id, petid, formTitle, formDescr, formName, formAge);
     });
