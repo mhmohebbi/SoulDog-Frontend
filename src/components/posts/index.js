@@ -99,9 +99,11 @@ const Post = (props) => {
   };
 
   const deleteForever = () => {
-    deletePost(id);
+    deletePost(id).then((res) => {
+      setDeleted(true);
+    });
     //console.log("deleted");
-    setTimeout(() => {console.log('sleep'); setDeleted(true);}, 1000);
+    // setTimeout(() => {console.log('sleep'); setDeleted(true);}, 1000);
   };
 
   const flipLike = () => {
