@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { useState, useEffect, useContext } from 'react';
-import { getPostById, getAllComments, addComment, deletePost, getLikeByUserIdAndPostId, addLikes, deleteLike } from '../../api';
+import { getPostById, getAllComments, addComment, deletePost, getLikeByUserIdAndPostId, addLikes, deleteLike, getLikeByPostId } from '../../api';
 import { useLocation, Redirect } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -60,6 +60,7 @@ const Post = (props) => {
   const [deleted, setDeleted] = useState(false);
   const [commentText, setCommentText] = useState('');
   const [liked, setLiked] = useState(null);
+  const [likeCount, setLikeCount] = useState(0);
 
   const { isAuth, user } = useContext(AuthContext);
 
@@ -81,6 +82,12 @@ const Post = (props) => {
       }
     });
 
+    getLikeByPostId(id).then((res) => {
+      // console.log(res.data);
+      // console.log(res.data.length);
+      setLikeCount(res.data.length);
+    });
+
   }, []);
 
   const handleCommentSubmit = () => {
@@ -98,13 +105,19 @@ const Post = (props) => {
   };
 
   const flipLike = () => {
-    liked ? setLiked(false) : setLiked(true);
     if (liked) {
+      // console.log(liked);
+      // console.log("liked");
       deleteLike(liked);
       setLiked(null);
+      setLikeCount(likeCount-1);
     } else {
-      setLiked(true);
-      addLikes(user.id, id);
+      addLikes(user.id, id).then((res)=> {
+        let likeid = res.data;
+        // console.log(res);
+        if (likeid !== "Like exists already") setLiked(likeid);
+      });
+      setLikeCount(likeCount+1);
     }
   };
 
@@ -152,6 +165,8 @@ const Post = (props) => {
                   <ThumbUpAltOutlinedIcon fontSize="large"/>
                 )
                 }
+                &nbsp;
+                {likeCount}
                 </>
               </IconButton>
             </div>

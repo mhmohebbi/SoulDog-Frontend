@@ -15,6 +15,8 @@ const logout = () => {
 
 const getAllPosts = () => axios.get(`${API_URL}/post/getAllPosts`);
 
+const getAllPets = () => axios.get(`${API_URL}/pet/getAllPets`);
+
 const deletePost = (id) => axios.post(`${API_URL}/post/removePost`, {
   id: id
 });
@@ -36,6 +38,8 @@ const getPetById = (id) => axios.get(`${API_URL}/pet/getPetById/${id}`);
 
 const getLikeByUserIdAndPostId = (uid, pid) => axios.get(`${API_URL}/like/getLikeByUserIdAndPostId/${uid}/${pid}`);
 
+const getLikeByPostId = (pid) => axios.get(`${API_URL}/like/getLikeByPostId/${pid}`);
+
 const deleteLike = (id) => axios.post(`${API_URL}/like/removeLike`, {
   id: id
 });
@@ -44,6 +48,24 @@ const addLikes = (user_id, post_id) =>
   axios.post(`${API_URL}/like/addLike`, {
     user_id: user_id,
     post_id: post_id,
+  });
+
+const addPets = (breed, maintenance, aggression, energy) =>
+  axios.post(`${API_URL}/pet/addPet`, {
+    breed: breed,
+    maintenance: maintenance,
+    aggression: aggression,
+    energy: energy,
+  });
+
+const addPosts = (user_id, pet_id, title, content, name, age) =>
+  axios.post(`${API_URL}/post/addPost`, {
+    user_id: user_id,
+    pet_id: pet_id,
+    title: title,
+    content: content,
+    name: name,
+    age: age,
   });
 
 export {
@@ -58,5 +80,9 @@ export {
   deletePost,
   getLikeByUserIdAndPostId,
   deleteLike,
-  addLikes
+  addLikes,
+  addPets,
+  addPosts,
+  getAllPets,
+  getLikeByPostId
 };
